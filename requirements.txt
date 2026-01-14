@@ -1,8 +1,9 @@
- streamlit
+streamlit
 yfinance
 pandas
 numpy
 plotly
 ta
-scikit-learn
 prophet
+scikit-learn
+pystan<3.0
