@@ -1,4 +1,4 @@
-import streamlit as st
+ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -68,9 +68,11 @@ with st.sidebar:
             stock_symbol = symbol
 
 # Cache data loading
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=600)
 def load_stock_data(symbol, period):
     try:
+        import time
+        time.sleep(1)  # Add small delay to avoid rate limiting
         stock = yf.Ticker(symbol)
         data = stock.history(period=period)
         info = stock.info
@@ -83,9 +85,14 @@ with st.spinner(f'Loading {stock_symbol} data...'):
     data, info, error = load_stock_data(stock_symbol, time_period)
 
 if data is None or data.empty:
-    st.error(f"❌ Could not fetch data for {stock_symbol}. Please check the symbol and try again.")
+    st.error(f"❌ Could not fetch data for {stock_symbol}.")
     if error:
-        st.error(f"Error details: {error}")
+        if "Rate limited" in error or "Too Many Requests" in error:
+            st.warning("⏳ **Yahoo Finance Rate Limit Reached**")
+            st.info("**Solutions:**\n- Wait 2-5 minutes and refresh\n- Try a different stock symbol\n- The free Yahoo Finance API has request limits")
+        else:
+            st.error(f"Error details: {error}")
+    st.info("💡 **Try these popular symbols:** MSFT, GOOGL, TSLA, AMZN, META")
     st.stop()
 
 # Stock info
