@@ -1,8 +1,8 @@
-streamlit
+ streamlit
 yfinance
 pandas
 numpy
 plotly
 ta
-prophet
 scikit-learn
+prophet
