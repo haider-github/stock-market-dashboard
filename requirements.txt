@@ -6,4 +6,3 @@ plotly
 ta
 prophet
 scikit-learn
-pystan<3.0
